@@ -1,4 +1,4 @@
-import DiaryHeader from "../../components/DiaryHeader";
+import EditDiaryHeader from "../../components/EditDiaryHeader";
 import Footer from "../../components/Footer";
 import { Diary } from "../../types";
 import diariesData from "../../../data/diary.json";
@@ -19,7 +19,7 @@ export default async function DiaryDetailPage({ params }: Props) {
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
-      <DiaryHeader />
+      <EditDiaryHeader />
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-6">
         <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-4">
           {new Date(diary.createdAt).toLocaleString()}
