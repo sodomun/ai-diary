@@ -30,11 +30,16 @@ export default function DiaryDetailPage() {
     router.push("/diaries");
   }
 
+  async function handleDelete() {
+    await fetch(`/api/diaries/${id}`, { method: "DELETE" });
+    router.push("/diaries");
+  }
+
   if (!diary) return null;
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
-      <EditDiaryHeader onEdit={handleEdit} />
+      <EditDiaryHeader onEdit={handleEdit} onDelete={handleDelete} />
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-6">
         <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-4">
           {new Date(diary.createdAt).toLocaleString()}

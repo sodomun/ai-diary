@@ -39,3 +39,18 @@ export async function PUT(request: Request, { params }: Params) {
 
   return NextResponse.json(diaries[index]);
 }
+
+export async function DELETE(_request: Request, { params }: Params) {
+  const { id } = await params;
+  const diaries = await readDiaries();
+  const index = diaries.findIndex((d) => d.id === id);
+
+  if (index === -1) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  diaries.splice(index, 1);
+  await writeFile(dataPath, JSON.stringify(diaries, null, 2), "utf-8");
+
+  return NextResponse.json({ success: true });
+}
