@@ -1,0 +1,1 @@
+// supabaseのURLとANON_KEYを管理する。
