@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "content": "Today was a productive day. I worked on the AI Diary app and made good progress.",
+    "createdAt": "2026-03-15T09:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "content": "Went for a walk in the morning. The weather was nice and I felt refreshed.",
+    "createdAt": "2026-03-14T08:30:00.000Z"
+  },
+  {
+    "id": "3",
+    "content": "Started reading a new book. It's about software design and I'm enjoying it so far.",
+    "createdAt": "2026-03-13T21:00:00.000Z"
+  }
+]
