@@ -2,12 +2,8 @@ import Link from "next/link";
 import DiaryHeader from "../components/DiaryHeader";
 import Footer from "../components/Footer";
 import DiaryList from "../components/DiaryList";
-import { Diary } from "../types";
-import diariesData from "../../data/diary.json";
 
 export default function DiariesPage() {
-  const diaries = diariesData as Diary[];
-
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
       <DiaryHeader />
@@ -20,7 +16,7 @@ export default function DiariesPage() {
             新規日記作成
           </Link>
         </div>
-        <DiaryList diaries={diaries} />
+        <DiaryList />
       </main>
       <Footer />
     </div>

@@ -1,11 +1,18 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Diary } from "../types";
 
-type Props = {
-  diaries: Diary[];
-};
+export default function DiaryList() {
+  const [diaries, setDiaries] = useState<Diary[]>([]);
 
-export default function DiaryList({ diaries }: Props) {
+  useEffect(() => {
+    fetch("/api/diaries", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => setDiaries(data));
+  }, []);
+
   return (
     <ul className="w-full max-w-3xl mx-auto px-4 py-6 flex flex-col gap-4">
       {diaries.map((diary) => (
