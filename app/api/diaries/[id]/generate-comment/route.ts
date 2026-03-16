@@ -6,12 +6,20 @@ const openai = new OpenAI({ // apiKey を取得
   apiKey: process.env.OPENAI_KEY,
 });
 
-function buildPrompt(content: string, aiPrompt: string | null): string {
-  let prompt = `以下の日記に対して、共感的で自然な短いコメントを日本語で書いてください。1〜3文程度で、説教くさくならないようにしてください。\n\n日記:\n${content}`
-  if (aiPrompt) {
-    prompt += `\n\n追加の指示:\n${aiPrompt}`
-  }
-  return prompt
+const DEFAULT_AI_PROMPT =
+  '日記に対して、共感的で自然な短いコメントを日本語で書いてください。1〜3文程度で、説教くさくならないようにしてください。'
+
+async function getAiPrompt(): Promise<string> {
+  const { data } = await supabase
+    .from('app_settings')
+    .select('ai_prompt')
+    .limit(1)
+    .maybeSingle()
+  return data?.ai_prompt ?? DEFAULT_AI_PROMPT
+}
+
+function buildPrompt(content: string, systemPrompt: string): string {
+  return `${systemPrompt}\n\n日記:\n${content}`
 }
 
 function formatDiary(diary: Record<string, unknown>) {
@@ -48,12 +56,13 @@ export async function POST(
   }
 
   // Generate AI comment
+  const systemPrompt = await getAiPrompt()
   let contentByAi: string
   try {
     const completion = await openai.chat.completions.create({
       model: 'gpt-5-mini', // AI api のモデル名
-      messages: [{ role: 'user', content: buildPrompt(diary.content, diary.ai_prompt) }],
-      max_completion_tokens: 800,
+      messages: [{ role: 'user', content: buildPrompt(diary.content, systemPrompt) }],
+      max_completion_tokens: 1000,
     })
     const text = completion.choices[0]?.message?.content?.trim()
     if (!text) {
