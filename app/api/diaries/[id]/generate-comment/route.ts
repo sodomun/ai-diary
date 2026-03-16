@@ -53,7 +53,7 @@ export async function POST(
     const completion = await openai.chat.completions.create({
       model: 'gpt-5-mini', // AI api のモデル名
       messages: [{ role: 'user', content: buildPrompt(diary.content, diary.ai_prompt) }],
-      max_completion_tokens: 500,
+      max_completion_tokens: 800,
     })
     const text = completion.choices[0]?.message?.content?.trim()
     if (!text) {

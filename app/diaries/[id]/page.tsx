@@ -11,7 +11,7 @@ export default function DiaryDetailPage() {
   const router = useRouter();
   const [diary, setDiary] = useState<Diary | null>(null);
   const [content, setContent] = useState("");
-  const [aiComment, setAiComment] = useState<string | null | undefined>(undefined);
+  const [contentByAi, setContentByAi] = useState<string | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
 
@@ -21,7 +21,7 @@ export default function DiaryDetailPage() {
       .then((data: Diary) => {
         setDiary(data);
         setContent(data.content);
-        setAiComment(data.contentByAi);
+        setContentByAi(data.contentByAi ?? null);
       });
   }, [id]);
 
@@ -41,7 +41,7 @@ export default function DiaryDetailPage() {
       const res = await fetch(`/api/diaries/${id}/generate-comment`, { method: "POST" });
       if (!res.ok) throw new Error("生成に失敗しました");
       const data: Diary = await res.json();
-      setAiComment(data.contentByAi);
+      setContentByAi(data.contentByAi ?? null);
     } catch {
       setAiError("AIコメントの生成に失敗しました。もう一度お試しください。");
     } finally {
@@ -83,11 +83,11 @@ export default function DiaryDetailPage() {
           {aiError && (
             <p className="text-xs text-red-500">{aiError}</p>
           )}
-          {!aiError && (
-            <p className="text-sm text-zinc-600 dark:text-zinc-300 whitespace-pre-wrap">
-              {aiComment ?? "AIコメントはまだ生成されていません"}
-            </p>
-          )}
+          <textarea
+            value={contentByAi === null ? "AIコメントはまだ生成されていません" : contentByAi}
+            readOnly
+            className="w-full h-32 p-3 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm text-zinc-600 dark:text-zinc-300 resize-none focus:outline-none"
+          />
         </div>
       </main>
       <Footer />

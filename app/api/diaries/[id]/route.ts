@@ -2,8 +2,22 @@ import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { Diary } from "../../../types";
 
-function toDiary(row: { id: string; content: string; created_at: string }): Diary {
-  return { id: row.id, content: row.content, createdAt: row.created_at };
+function toDiary(row: {
+  id: string;
+  content: string;
+  created_at: string;
+  content_by_ai?: string | null;
+  theme_color?: string | null;
+  ai_prompt?: string | null;
+}): Diary {
+  return {
+    id: row.id,
+    content: row.content,
+    createdAt: row.created_at,
+    contentByAi: row.content_by_ai ?? null,
+    themeColor: row.theme_color ?? null,
+    aiPrompt: row.ai_prompt ?? null,
+  };
 }
 
 type Params = { params: Promise<{ id: string }> };
