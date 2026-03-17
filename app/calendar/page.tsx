@@ -62,7 +62,13 @@ export default function CalendarPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
-      <CalendarHeader year={year} month={month} onPrev={goPrev} onNext={goNext} />
+      <CalendarHeader
+          year={year}
+          month={month}
+          onPrev={goPrev}
+          onNext={goNext}
+          onChangeYearMonth={(y, m) => { setYear(y); setMonth(m); }}
+        />
       <main className="flex-1">
         <Calendar
           year={year}
