@@ -11,7 +11,7 @@ export default function DiariesPage() {
         <div className="max-w-3xl mx-auto w-full px-4 pt-6">
           <Link
             href="/diaries/new"
-            className="block w-full text-center py-3 bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 text-sm font-medium rounded-lg hover:bg-zinc-700 dark:hover:bg-zinc-200 transition-colors"
+            className="inline-block text-center px-5 py-2 bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 text-sm font-medium rounded-lg hover:bg-zinc-700 dark:hover:bg-zinc-200 transition-colors"
           >
             新規日記作成
           </Link>
