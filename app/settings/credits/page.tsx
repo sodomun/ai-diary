@@ -35,12 +35,12 @@ export default function CreditsPage() {
                 本アプリで使用しているアイコンは Icons8 が提供するものです。
               </p>
             </div>
-            <div className="border-t border-zinc-100 dark:border-zinc-800 pt-3 flex flex-col gap-2">
-              <a target="_blank" href="https://icons8.com/icon/123481/journal">日記</a> アイコン by <a target="_blank" href="https://icons8.com">Icons8</a>
-              <a target="_blank" href="https://icons8.com/icon/23/calendar">カレンダー</a> アイコン by <a target="_blank" href="https://icons8.com">Icons8</a>
-              <a target="_blank" href="https://icons8.com/icon/364/settings">設定</a> アイコン by <a target="_blank" href="https://icons8.com">Icons8</a>
-              <a target="_blank" href="https://icons8.com/icon/71201/edit-pencil">編集</a> アイコン by <a target="_blank" href="https://icons8.com">Icons8</a>
-              <a target="_blank" href="https://icons8.com/icon/11705/trash-can">ゴミ箱</a> アイコン by <a target="_blank" href="https://icons8.com">Icons8</a>
+            <div className="border-t border-zinc-100 dark:border-zinc-800 pt-3 flex flex-col gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+              <span><a target="_blank" rel="noopener noreferrer" href="https://icons8.com/icon/123481/journal" className="text-blue-500 hover:text-blue-600">日記</a> アイコン by <a target="_blank" rel="noopener noreferrer" href="https://icons8.com" className="text-blue-500 hover:text-blue-600">Icons8</a></span>
+              <span><a target="_blank" rel="noopener noreferrer" href="https://icons8.com/icon/23/calendar" className="text-blue-500 hover:text-blue-600">カレンダー</a> アイコン by <a target="_blank" rel="noopener noreferrer" href="https://icons8.com" className="text-blue-500 hover:text-blue-600">Icons8</a></span>
+              <span><a target="_blank" rel="noopener noreferrer" href="https://icons8.com/icon/364/settings" className="text-blue-500 hover:text-blue-600">設定</a> アイコン by <a target="_blank" rel="noopener noreferrer" href="https://icons8.com" className="text-blue-500 hover:text-blue-600">Icons8</a></span>
+              <span><a target="_blank" rel="noopener noreferrer" href="https://icons8.com/icon/71201/edit-pencil" className="text-blue-500 hover:text-blue-600">編集</a> アイコン by <a target="_blank" rel="noopener noreferrer" href="https://icons8.com" className="text-blue-500 hover:text-blue-600">Icons8</a></span>
+              <span><a target="_blank" rel="noopener noreferrer" href="https://icons8.com/icon/11705/trash-can" className="text-blue-500 hover:text-blue-600">ゴミ箱</a> アイコン by <a target="_blank" rel="noopener noreferrer" href="https://icons8.com" className="text-blue-500 hover:text-blue-600">Icons8</a></span>
             </div>
           </div>
         </div>
