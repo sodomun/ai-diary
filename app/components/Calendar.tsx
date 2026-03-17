@@ -1,3 +1,5 @@
+import HolidayJp from "@holiday-jp/holiday_jp";
+
 type Props = {
   year: number;
   month: number;
@@ -83,11 +85,13 @@ export default function Calendar({ year, month, selectedDate, onSelectDate }: Pr
           const isToday = isSameDay(date, today);
           const isSelected = isSameDay(date, selectedDate);
 
+          const isHoliday = HolidayJp.isHoliday(date);
+
           const colorClass = isSelected
             ? "bg-blue-500 text-white font-bold"
             : isToday
             ? "bg-zinc-900 text-white dark:bg-zinc-50 dark:text-zinc-900 font-bold"
-            : col === 0
+            : col === 0 || isHoliday
             ? "text-red-500"
             : col === 6
             ? "text-blue-500"
