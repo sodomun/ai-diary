@@ -1,11 +1,11 @@
 import Link from "next/link";
-import DiaryHeader from "../components/DiaryHeader";
+import SettingsHeader from "../components/SettingsHeader";
 import Footer from "../components/Footer";
 
 export default function SettingsPage() {
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
-      <DiaryHeader />
+      <SettingsHeader />
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-6">
         <Link
           href="/settings/ai-prompt"
