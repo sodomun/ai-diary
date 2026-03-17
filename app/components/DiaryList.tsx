@@ -4,14 +4,21 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Diary } from "../types";
 
-export default function DiaryList() {
-  const [diaries, setDiaries] = useState<Diary[]>([]);
+type Props = {
+  diaries?: Diary[];
+};
+
+export default function DiaryList({ diaries: propDiaries }: Props = {}) {
+  const [fetchedDiaries, setFetchedDiaries] = useState<Diary[]>([]);
 
   useEffect(() => {
+    if (propDiaries !== undefined) return;
     fetch("/api/diaries", { cache: "no-store" })
       .then((res) => res.json())
-      .then((data) => setDiaries(data));
-  }, []);
+      .then((data) => setFetchedDiaries(data));
+  }, [propDiaries]);
+
+  const diaries = propDiaries ?? fetchedDiaries;
 
   return (
     <ul className="w-full max-w-3xl mx-auto px-4 py-6 flex flex-col gap-4">
