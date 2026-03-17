@@ -46,7 +46,7 @@ export default function CalendarHeader({ year, month, onPrev, onNext, onChangeYe
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
           <button
             onClick={onPrev}
-            className="text-xl font-bold text-zinc-900 dark:text-zinc-50 w-10 text-left"
+            className="text-xl font-bold text-zinc-900 dark:text-zinc-50 w-10 text-left cursor-pointer hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
           >
             ＜
           </button>
@@ -58,7 +58,7 @@ export default function CalendarHeader({ year, month, onPrev, onNext, onChangeYe
           </button>
           <button
             onClick={onNext}
-            className="text-xl font-bold text-zinc-900 dark:text-zinc-50 w-10 text-right"
+            className="text-xl font-bold text-zinc-900 dark:text-zinc-50 w-10 text-right cursor-pointer hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
           >
             ＞
           </button>
