@@ -1,19 +1,34 @@
 type Props = {
   year: number;
   month: number;
+  selectedDate: Date | null;
+  onSelectDate: (date: Date) => void;
 };
 
 type Cell = {
-  day: number;
+  date: Date;
   isCurrent: boolean;
 };
 
 const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"];
 
-export default function Calendar({ year, month }: Props) {
+function isSameDay(a: Date, b: Date) {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
+}
+
+export default function Calendar({ year, month, selectedDate, onSelectDate }: Props) {
   const firstDayOfWeek = new Date(year, month - 1, 1).getDay();
   const daysInMonth = new Date(year, month, 0).getDate();
   const daysInPrevMonth = new Date(year, month - 1, 0).getDate();
+
+  const prevYear = month === 1 ? year - 1 : year;
+  const prevMonth = month === 1 ? 12 : month - 1;
+  const nextYear = month === 12 ? year + 1 : year;
+  const nextMonth = month === 12 ? 1 : month + 1;
 
   const today = new Date();
 
@@ -21,18 +36,24 @@ export default function Calendar({ year, month }: Props) {
 
   // 前月の日付で先頭を埋める
   for (let i = firstDayOfWeek - 1; i >= 0; i--) {
-    cells.push({ day: daysInPrevMonth - i, isCurrent: false });
+    cells.push({
+      date: new Date(prevYear, prevMonth - 1, daysInPrevMonth - i),
+      isCurrent: false,
+    });
   }
 
   // 当月の日付
   for (let d = 1; d <= daysInMonth; d++) {
-    cells.push({ day: d, isCurrent: true });
+    cells.push({ date: new Date(year, month - 1, d), isCurrent: true });
   }
 
   // 次月の日付で末尾を埋める
   let nextDay = 1;
   while (cells.length % 7 !== 0) {
-    cells.push({ day: nextDay++, isCurrent: false });
+    cells.push({
+      date: new Date(nextYear, nextMonth - 1, nextDay++),
+      isCurrent: false,
+    });
   }
 
   return (
@@ -57,15 +78,14 @@ export default function Calendar({ year, month }: Props) {
 
       {/* 日付グリッド */}
       <div className="grid grid-cols-7">
-        {cells.map(({ day, isCurrent }, idx) => {
+        {cells.map(({ date, isCurrent }, idx) => {
           const col = idx % 7;
-          const isToday =
-            isCurrent &&
-            today.getFullYear() === year &&
-            today.getMonth() + 1 === month &&
-            today.getDate() === day;
+          const isToday = isSameDay(date, today);
+          const isSelected = selectedDate !== null && isSameDay(date, selectedDate);
 
-          const colorClass = isToday
+          const colorClass = isSelected
+            ? "bg-blue-500 text-white font-bold"
+            : isToday
             ? "bg-zinc-900 text-white dark:bg-zinc-50 dark:text-zinc-900 font-bold"
             : col === 0
             ? "text-red-500"
@@ -78,13 +98,14 @@ export default function Calendar({ year, month }: Props) {
               key={idx}
               className="aspect-square flex items-center justify-center"
             >
-              <span
-                className={`text-sm w-8 h-8 flex items-center justify-center rounded-full ${colorClass} ${
+              <button
+                onClick={() => onSelectDate(date)}
+                className={`text-sm w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:ring-2 hover:ring-blue-400 transition-all ${colorClass} ${
                   !isCurrent ? "opacity-30" : ""
                 }`}
               >
-                {day}
-              </span>
+                {date.getDate()}
+              </button>
             </div>
           );
         })}
