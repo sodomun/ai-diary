@@ -57,7 +57,7 @@ export default function Calendar({ year, month, selectedDate, onSelectDate }: Pr
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-4">
+    <div className="max-w-3xl mx-auto px-4 py-8">
       {/* 曜日ヘッダー */}
       <div className="grid grid-cols-7 mb-1">
         {WEEKDAYS.map((weekday, i) => (
@@ -96,7 +96,7 @@ export default function Calendar({ year, month, selectedDate, onSelectDate }: Pr
           return (
             <div
               key={idx}
-              className="aspect-square flex items-center justify-center"
+              className="h-12 flex items-center justify-center"
             >
               <button
                 onClick={() => onSelectDate(date)}
