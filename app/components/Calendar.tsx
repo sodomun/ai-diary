@@ -1,7 +1,7 @@
 type Props = {
   year: number;
   month: number;
-  selectedDate: Date | null;
+  selectedDate: Date;
   onSelectDate: (date: Date) => void;
 };
 
@@ -81,7 +81,7 @@ export default function Calendar({ year, month, selectedDate, onSelectDate }: Pr
         {cells.map(({ date, isCurrent }, idx) => {
           const col = idx % 7;
           const isToday = isSameDay(date, today);
-          const isSelected = selectedDate !== null && isSameDay(date, selectedDate);
+          const isSelected = isSameDay(date, selectedDate);
 
           const colorClass = isSelected
             ? "bg-blue-500 text-white font-bold"

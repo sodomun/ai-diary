@@ -19,7 +19,7 @@ export default function CalendarPage() {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth() + 1);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [allDiaries, setAllDiaries] = useState<Diary[]>([]);
 
   useEffect(() => {
@@ -56,11 +56,9 @@ export default function CalendarPage() {
     }
   };
 
-  const filteredDiaries = selectedDate
-    ? allDiaries.filter((diary) =>
-        isSameDay(new Date(diary.createdAt), selectedDate)
-      )
-    : [];
+  const filteredDiaries = allDiaries.filter((diary) =>
+    isSameDay(new Date(diary.createdAt), selectedDate)
+  );
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
@@ -72,8 +70,7 @@ export default function CalendarPage() {
           selectedDate={selectedDate}
           onSelectDate={handleSelectDate}
         />
-        {selectedDate && (
-          <section className="max-w-3xl mx-auto px-4">
+        <section className="max-w-3xl mx-auto px-4">
             <h2 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 mb-2">
               {selectedDate.getFullYear()}年{selectedDate.getMonth() + 1}月{selectedDate.getDate()}日の日記
             </h2>
@@ -84,8 +81,7 @@ export default function CalendarPage() {
                 この日の日記はありません
               </p>
             )}
-          </section>
-        )}
+        </section>
       </main>
       <Footer />
     </div>
