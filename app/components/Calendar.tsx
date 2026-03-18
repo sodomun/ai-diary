@@ -1,10 +1,12 @@
 import HolidayJp from "@holiday-jp/holiday_jp";
+import { Diary } from "../types";
 
 type Props = {
   year: number;
   month: number;
   selectedDate: Date;
   onSelectDate: (date: Date) => void;
+  diaries?: Diary[];
 };
 
 type Cell = {
@@ -22,7 +24,10 @@ function isSameDay(a: Date, b: Date) {
   );
 }
 
-export default function Calendar({ year, month, selectedDate, onSelectDate }: Props) {
+export default function Calendar({ year, month, selectedDate, onSelectDate, diaries = [] }: Props) {
+  const diaryDateSet = new Set(
+    diaries.map((d) => new Date(d.createdAt).toDateString())
+  );
   const firstDayOfWeek = new Date(year, month - 1, 1).getDay();
   const daysInMonth = new Date(year, month, 0).getDate();
   const daysInPrevMonth = new Date(year, month - 1, 0).getDate();
@@ -84,6 +89,7 @@ export default function Calendar({ year, month, selectedDate, onSelectDate }: Pr
           const col = idx % 7;
           const isToday = isSameDay(date, today);
           const isSelected = isSameDay(date, selectedDate);
+          const isDiaryDate = isCurrent && diaryDateSet.has(date.toDateString());
 
           const isHoliday = HolidayJp.isHoliday(date);
 
@@ -97,6 +103,11 @@ export default function Calendar({ year, month, selectedDate, onSelectDate }: Pr
             ? "text-blue-500"
             : "text-zinc-800 dark:text-zinc-100";
 
+          const diaryHighlight =
+            isDiaryDate && !isSelected && !isToday
+              ? "bg-gray-200 dark:bg-zinc-700"
+              : "";
+
           return (
             <div
               key={idx}
@@ -104,7 +115,7 @@ export default function Calendar({ year, month, selectedDate, onSelectDate }: Pr
             >
               <button
                 onClick={() => onSelectDate(date)}
-                className={`text-sm w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:ring-2 hover:ring-blue-400 transition-all ${colorClass} ${
+                className={`text-sm w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:ring-2 hover:ring-blue-400 transition-all ${colorClass} ${diaryHighlight} ${
                   !isCurrent ? "opacity-30" : ""
                 }`}
               >

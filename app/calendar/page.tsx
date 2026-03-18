@@ -75,6 +75,7 @@ export default function CalendarPage() {
           month={month}
           selectedDate={selectedDate}
           onSelectDate={handleSelectDate}
+          diaries={allDiaries}
         />
         <section className="max-w-3xl mx-auto px-4">
             <h2 className="text-sm font-semibold text-zinc-500 dark:text-zinc-400 mb-2">
