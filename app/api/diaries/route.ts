@@ -19,6 +19,19 @@ export async function GET() {
   return NextResponse.json(data.map(toDiary));
 }
 
+export async function DELETE() {
+  const { error } = await supabase
+    .from("diaries")
+    .delete()
+    .neq("id", "00000000-0000-0000-0000-000000000000");
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return new NextResponse(null, { status: 204 });
+}
+
 export async function POST(request: Request) {
   const { content } = await request.json();
 
