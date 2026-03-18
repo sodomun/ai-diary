@@ -8,12 +8,18 @@ export default function DiariesPage() {
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
       <DiaryHeader />
       <main className="flex-1">
-        <div className="max-w-3xl mx-auto w-full px-4 pt-6">
+        <div className="max-w-3xl mx-auto w-full px-4 pt-6 flex gap-3">
           <Link
             href="/diaries/new"
             className="inline-block text-center px-5 py-2 bg-zinc-900 dark:bg-zinc-50 text-white dark:text-zinc-900 text-sm font-medium rounded-lg hover:bg-zinc-700 dark:hover:bg-zinc-200 transition-colors"
           >
             新規日記作成
+          </Link>
+          <Link
+            href="/diaries/search"
+            className="inline-block text-center px-5 py-2 border border-zinc-300 dark:border-zinc-600 text-zinc-700 dark:text-zinc-300 text-sm font-medium rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          >
+            検索
           </Link>
         </div>
         <DiaryList />

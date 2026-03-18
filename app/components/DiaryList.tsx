@@ -6,9 +6,25 @@ import { Diary } from "../types";
 
 type Props = {
   diaries?: Diary[];
+  query?: string;
 };
 
-export default function DiaryList({ diaries: propDiaries }: Props = {}) {
+function highlight(text: string, query: string) {
+  if (!query) return text;
+  const regex = new RegExp(`(${query})`, "gi");
+  const parts = text.split(regex);
+  return parts.map((part, i) =>
+    part.toLowerCase() === query.toLowerCase() ? (
+      <span key={i} className="bg-yellow-200 dark:bg-yellow-500/40 px-0.5 rounded">
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
+}
+
+export default function DiaryList({ diaries: propDiaries, query = "" }: Props = {}) {
   const [fetchedDiaries, setFetchedDiaries] = useState<Diary[]>([]);
 
   useEffect(() => {
@@ -28,7 +44,7 @@ export default function DiaryList({ diaries: propDiaries }: Props = {}) {
             <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-2">
               {new Date(diary.createdAt).toLocaleString()}
             </p>
-            <p className="text-zinc-700 dark:text-zinc-300 line-clamp-3">{diary.content}</p>
+            <p className="text-zinc-700 dark:text-zinc-300 line-clamp-3">{highlight(diary.content, query)}</p>
           </Link>
         </li>
       ))}
