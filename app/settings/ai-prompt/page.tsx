@@ -6,7 +6,7 @@ import Footer from "../../components/Footer";
 
 const DEFAULT_PROMPT =
   "日記に対して、共感的で自然な短いコメントを日本語で書いてください。1〜3文程度で、説教くさくならないようにしてください。";
-const MAX_LENGTH = 100;
+const MAX_LENGTH = 150;
 
 export default function AiPromptSettingsPage() {
   const [value, setValue] = useState("");
@@ -50,14 +50,14 @@ export default function AiPromptSettingsPage() {
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
       <header className="w-full bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
+        <div className="max-w-3xl mx-auto px-4 py-3 relative flex items-center">
           <Link
             href="/settings"
             className="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50"
           >
-            ← 戻る
+            戻る
           </Link>
-          <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-200">
+          <span className="absolute left-1/2 -translate-x-1/2 text-sm font-semibold text-zinc-700 dark:text-zinc-200">
             AIの性格を決める
           </span>
         </div>

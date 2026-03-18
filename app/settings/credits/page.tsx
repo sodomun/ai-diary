@@ -5,22 +5,19 @@ export default function CreditsPage() {
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
       <header className="w-full bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
-        <div className="max-w-3xl mx-auto px-4 py-4 flex items-center gap-3">
+        <div className="max-w-3xl mx-auto px-4 py-4 relative flex items-center">
           <Link
             href="/settings"
             className="text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors"
           >
-            ← 設定
+            戻る
           </Link>
-          <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">クレジット</h1>
+          <h1 className="absolute left-1/2 -translate-x-1/2 text-xl font-bold text-zinc-900 dark:text-zinc-50">クレジット</h1>
         </div>
       </header>
 
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-6 flex flex-col gap-4">
         <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg p-5">
-          <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wide mb-3">
-            アイコン
-          </p>
           <div className="flex flex-col gap-3">
             <div>
               <a
@@ -32,7 +29,7 @@ export default function CreditsPage() {
                 Icons by Icons8
               </a>
               <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-0.5">
-                本アプリで使用しているアイコンは Icons8 が提供するものです。
+                AI日記で使用しているアイコンは Icons8 が提供するものです。
               </p>
             </div>
             <div className="border-t border-zinc-100 dark:border-zinc-800 pt-3 flex flex-col gap-2 text-sm text-zinc-600 dark:text-zinc-400">
