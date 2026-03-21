@@ -60,7 +60,7 @@ export default function SignupPage() {
               id='password'
               name='password'
               className='w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent transition'
-              placeholder='8文字以上'
+              placeholder='6文字以上'
               required
             />
           </div>

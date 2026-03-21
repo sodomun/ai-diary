@@ -37,31 +37,37 @@ export default function SettingsPage() {
       <SettingsHeader />
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-6 flex flex-col items-center gap-3">
         <Link
+          href="/settings/profile"
+          className="w-48 text-center py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+        >
+          プロフィール
+        </Link>
+        <Link
           href="/settings/ai-prompt"
-          className="px-6 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+          className="w-48 text-center py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
         >
           AIの性格を決める
         </Link>
         <Link
           href="/settings/credits"
-          className="px-6 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+          className="w-48 text-center py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
         >
           クレジット
         </Link>
-        <button
-          onClick={() => { setError(null); setIsOpen(true); }}
-          className="px-6 py-2.5 bg-white dark:bg-zinc-900 border border-red-300 dark:border-red-800 rounded-lg text-sm font-medium text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
-        >
-          全削除
-        </button>
         <form action={logout}>
           <button
             type="submit"
-            className="px-6 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+            className="w-48 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
           >
             ログアウト
           </button>
         </form>
+        <button
+          onClick={() => { setError(null); setIsOpen(true); }}
+          className="w-48 py-2.5 bg-white dark:bg-zinc-900 border border-red-300 dark:border-red-800 rounded-lg text-sm font-medium text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
+        >
+          全削除
+        </button>
       </main>
       <Footer />
 
