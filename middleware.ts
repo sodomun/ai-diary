@@ -27,7 +27,8 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   const { pathname } = request.nextUrl;
 
-  if (pathname.startsWith('/diaries') && !user) {
+  const protectedPaths = ['/diaries', '/calendar', '/settings'];
+  if (protectedPaths.some((p) => pathname.startsWith(p)) && !user) { // proctedPathsのいずれかのURLに一致し, かつ非ログイン状態においてはログイン画面に強制遷移される.
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
@@ -39,5 +40,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/diaries/:path*', '/login', '/signup'],
+  matcher: ['/diaries/:path*', '/calendar/:path*', '/settings/:path*', '/login', '/signup'],
 };
