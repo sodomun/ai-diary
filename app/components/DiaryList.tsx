@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 import { Diary } from "../types";
 
 type Props = {
@@ -24,15 +25,12 @@ function highlight(text: string, query: string) {
   );
 }
 
+// undefined(キャッシュに存在しない新規日記データ)がある場合に限って、/api/diaries経由で最新日記情報を取得する.
 export default function DiaryList({ diaries: propDiaries, query = "" }: Props = {}) {
-  const [fetchedDiaries, setFetchedDiaries] = useState<Diary[]>([]);
-
-  useEffect(() => {
-    if (propDiaries !== undefined) return;
-    fetch("/api/diaries", { cache: "no-store" })
-      .then((res) => res.json())
-      .then((data) => setFetchedDiaries(data));
-  }, [propDiaries]);
+  const { data: fetchedDiaries = [] } = useSWR<Diary[]>(
+    propDiaries !== undefined ? null : "/api/diaries",
+    fetcher
+  );
 
   const diaries = propDiaries ?? fetchedDiaries;
 

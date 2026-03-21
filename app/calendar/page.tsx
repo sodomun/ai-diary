@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 import CalendarHeader from "../components/CaldendarHeader";
 import Calendar from "../components/Calendar";
 import DiaryList from "../components/DiaryList";
@@ -20,13 +22,7 @@ export default function CalendarPage() {
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth() + 1);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [allDiaries, setAllDiaries] = useState<Diary[]>([]);
-
-  useEffect(() => {
-    fetch("/api/diaries", { cache: "no-store" })
-      .then((res) => res.json())
-      .then((data) => setAllDiaries(data));
-  }, []);
+  const { data: allDiaries = [] } = useSWR<Diary[]>("/api/diaries", fetcher); // 画面が開いたら必ず"/api/diaries"に最新のデータを確認しに行く. データがまだ存在しない場合は[](空配列).
 
   const goPrev = () => {
     if (month === 1) {
