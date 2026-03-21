@@ -58,11 +58,8 @@ export default function DiaryDetailPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black">
-      <EditDiaryHeader onEdit={handleEdit} onDelete={handleDelete} />
+      <EditDiaryHeader createdAt={diary.createdAt} onEdit={handleEdit} onDelete={handleDelete} />
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 py-6">
-        <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-4">
-          {new Date(diary.createdAt).toLocaleString()}
-        </p>
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
