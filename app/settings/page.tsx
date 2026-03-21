@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import SettingsHeader from "../components/SettingsHeader";
 import Footer from "../components/Footer";
+import { logout } from "@/actions/auth";
 
 export default function SettingsPage() {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,6 +54,14 @@ export default function SettingsPage() {
         >
           全削除
         </button>
+        <form action={logout}>
+          <button
+            type="submit"
+            className="px-6 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+          >
+            ログアウト
+          </button>
+        </form>
       </main>
       <Footer />
 

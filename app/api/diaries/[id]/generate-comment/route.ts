@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 
 const openai = new OpenAI({ // apiKey を取得
   apiKey: process.env.OPENAI_KEY,
@@ -9,7 +9,7 @@ const openai = new OpenAI({ // apiKey を取得
 const DEFAULT_AI_PROMPT =
   '日記に対して、共感的で自然な短いコメントを日本語で書いてください。1〜3文程度で、説教くさくならないようにしてください。'
 
-async function getAiPrompt(): Promise<string> {
+async function getAiPrompt(supabase: Awaited<ReturnType<typeof createClient>>): Promise<string> {
   const { data } = await supabase
     .from('app_settings')
     .select('ai_prompt')
@@ -38,12 +38,18 @@ export async function POST(
   { params }: { params: Promise<{ id: string}> }
 ) {
   const { id } = await params
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 
   // Fetch diary entry
   const { data: diary, error: fetchError } = await supabase
     .from('diaries')
     .select('*')
     .eq('id', id)
+    .eq('user_id', user.id)
     .single()
 
   if (fetchError) { // apiKey を取得失敗した場合のエラーログ
@@ -56,7 +62,7 @@ export async function POST(
   }
 
   // Generate AI comment
-  const systemPrompt = await getAiPrompt()
+  const systemPrompt = await getAiPrompt(supabase)
   let contentByAi: string
   try {
     const completion = await openai.chat.completions.create({
@@ -83,6 +89,7 @@ export async function POST(
     .from('diaries')
     .update({ content_by_ai: contentByAi })
     .eq('id', id)
+    .eq('user_id', user.id)
     .select()
     .single()
 

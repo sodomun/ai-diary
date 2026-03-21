@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 import { Diary } from "../../../types";
 
 function toDiary(row: {
@@ -24,11 +24,17 @@ type Params = { params: Promise<{ id: string }> };
 
 export async function GET(_request: Request, { params }: Params) {
   const { id } = await params;
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const { data, error } = await supabase
     .from("diaries")
     .select("*")
     .eq("id", id)
+    .eq("user_id", user.id)
     .single();
 
   if (error) {
@@ -40,12 +46,19 @@ export async function GET(_request: Request, { params }: Params) {
 
 export async function PUT(request: Request, { params }: Params) {
   const { id } = await params;
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const { content } = await request.json();
 
   const { data, error } = await supabase
     .from("diaries")
     .update({ content })
     .eq("id", id)
+    .eq("user_id", user.id)
     .select()
     .single();
 
@@ -58,11 +71,17 @@ export async function PUT(request: Request, { params }: Params) {
 
 export async function DELETE(_request: Request, { params }: Params) {
   const { id } = await params;
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   const { error } = await supabase
     .from("diaries")
     .delete()
-    .eq("id", id);
+    .eq("id", id)
+    .eq("user_id", user.id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
