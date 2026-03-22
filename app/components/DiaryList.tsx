@@ -40,7 +40,7 @@ export default function DiaryList({ diaries: propDiaries, query = "" }: Props = 
 
   const { data: fetchedDiaries, isLoading: isDiariesLoading } = useSWR<Diary[]>(
     swrKey,
-    ([url]) => fetcher(url)
+    ([url]: [string]) => fetcher(url)
   );
 
   const diaries = propDiaries ?? fetchedDiaries ?? [];
