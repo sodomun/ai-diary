@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import { logout } from "@/actions/auth";
 
 export default function SettingsPage() {
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +65,7 @@ export default function SettingsPage() {
         </Link>
         <button
           type="button"
-          onClick={handleLogout}
+          onClick={() => setIsLogoutOpen(true)}
           className="w-48 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
         >
           ログアウト
@@ -77,6 +78,30 @@ export default function SettingsPage() {
         </button>
       </main>
       <Footer />
+
+      {isLogoutOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl p-6 w-80 shadow-xl">
+            <p className="text-sm font-semibold text-zinc-800 dark:text-zinc-100">
+              ログアウトしますか？
+            </p>
+            <div className="flex gap-2 mt-5">
+              <button
+                onClick={() => setIsLogoutOpen(false)}
+                className="flex-1 px-4 py-2 text-sm rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              >
+                キャンセル
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex-1 px-4 py-2 text-sm rounded-lg bg-zinc-800 hover:bg-zinc-700 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 font-medium transition-colors"
+              >
+                ログアウト
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
