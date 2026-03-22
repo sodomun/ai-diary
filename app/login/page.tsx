@@ -3,6 +3,7 @@
 import { login } from '@/actions/auth';
 import Link from 'next/link';
 import { useState } from 'react';
+import AuthHeader from '../components/AuthHeader';
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
@@ -16,7 +17,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center px-4'>
+    <div className='min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col'>
+      <AuthHeader />
+      <div className='flex-1 flex items-center justify-center px-4'>
       <div className='w-full max-w-md bg-white rounded-2xl shadow-lg p-8'>
         <h2 className='text-2xl font-bold text-center text-slate-800 mb-2'>
           ログイン
@@ -69,6 +72,7 @@ export default function LoginPage() {
             新規登録はこちら
           </Link>
         </p>
+      </div>
       </div>
     </div>
   );
