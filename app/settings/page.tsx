@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSWRConfig } from "swr";
 import SettingsHeader from "../components/SettingsHeader";
 import Footer from "../components/Footer";
 import { logout } from "@/actions/auth";
@@ -12,6 +13,13 @@ export default function SettingsPage() {
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const { mutate } = useSWRConfig();
+
+  const handleLogout = async () => {
+    // ログアウト時に revalidate せずに, 強制的にキャッシュを変更（削除）する.
+    await mutate(() => true, undefined, { revalidate: false });
+    await logout();
+  };
 
   const handleDelete = async () => {
     setDeleting(true);
@@ -54,14 +62,13 @@ export default function SettingsPage() {
         >
           クレジット
         </Link>
-        <form action={logout}>
-          <button
-            type="submit"
-            className="w-48 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-          >
-            ログアウト
-          </button>
-        </form>
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="w-48 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+        >
+          ログアウト
+        </button>
         <button
           onClick={() => { setError(null); setIsOpen(true); }}
           className="w-48 py-2.5 bg-white dark:bg-zinc-900 border border-red-300 dark:border-red-800 rounded-lg text-sm font-medium text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"

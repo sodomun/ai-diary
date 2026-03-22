@@ -25,14 +25,33 @@ function highlight(text: string, query: string) {
   );
 }
 
-// undefined(キャッシュに存在しない新規日記データ)がある場合に限って、/api/diaries経由で最新日記情報を取得する.
+// propDiariesが渡された場合はSWRを使わず、ない場合は/api/meでuser_idを確定してからキャッシュを分離して取得する.
 export default function DiaryList({ diaries: propDiaries, query = "" }: Props = {}) {
-  const { data: fetchedDiaries = [] } = useSWR<Diary[]>(
-    propDiaries !== undefined ? null : "/api/diaries",
+  const needsFetch = propDiaries === undefined;
+
+  // propDiariesがない場合のみ /api/me でユーザーを確定する
+  const { data: me, isLoading: isUserLoading } = useSWR<{ id: string } | null>(
+    needsFetch ? "/api/me" : null,
     fetcher
   );
 
-  const diaries = propDiaries ?? fetchedDiaries;
+  // userが確定するまでnullキーでフェッチ停止。user_idをキーに含めてユーザーごとにキャッシュを分離する。
+  const swrKey = needsFetch && me ? ["/api/diaries", me.id] : null;
+
+  const { data: fetchedDiaries, isLoading: isDiariesLoading } = useSWR<Diary[]>(
+    swrKey,
+    ([url]) => fetcher(url)
+  );
+
+  const diaries = propDiaries ?? fetchedDiaries ?? [];
+
+  if (needsFetch && (isUserLoading || isDiariesLoading)) {
+    return (
+      <div className="w-full max-w-3xl mx-auto px-4 py-10 flex justify-center">
+        <p className="text-sm text-zinc-400 dark:text-zinc-500">読み込み中...</p>
+      </div>
+    );
+  }
 
   return (
     <ul className="w-full max-w-3xl mx-auto px-4 py-6 flex flex-col gap-4">
