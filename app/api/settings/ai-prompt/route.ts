@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { createClient } from '@/lib/supabase/server'
 
 export async function GET() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const { data, error } = await supabase
     .from('app_settings')
     .select('ai_prompt')
-    .limit(1)
+    .eq('user_id', user.id)
     .maybeSingle()
 
   if (error) {
@@ -17,6 +23,12 @@ export async function GET() {
 }
 
 export async function PUT(req: NextRequest) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const { aiPrompt } = await req.json()
 
   if (typeof aiPrompt !== 'string') {
@@ -26,31 +38,12 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: 'aiPrompt must be 100 characters or fewer' }, { status: 400 })
   }
 
-  // Check if a row already exists
-  const { data: existing, error: fetchError } = await supabase
+  const { error: saveError } = await supabase
     .from('app_settings')
-    .select('id')
-    .limit(1)
-    .maybeSingle()
-
-  if (fetchError) {
-    console.error('[settings/ai-prompt] PUT fetch error:', fetchError)
-    return NextResponse.json({ error: 'Failed to read settings' }, { status: 500 })
-  }
-
-  let saveError
-  if (existing) {
-    const { error } = await supabase
-      .from('app_settings')
-      .update({ ai_prompt: aiPrompt, updated_at: new Date().toISOString() })
-      .eq('id', existing.id)
-    saveError = error
-  } else {
-    const { error } = await supabase
-      .from('app_settings')
-      .insert({ ai_prompt: aiPrompt })
-    saveError = error
-  }
+    .upsert(
+      { user_id: user.id, ai_prompt: aiPrompt, updated_at: new Date().toISOString() },
+      { onConflict: 'user_id' }
+    )
 
   if (saveError) {
     console.error('[settings/ai-prompt] PUT save error:', saveError)

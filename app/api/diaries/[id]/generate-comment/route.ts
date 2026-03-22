@@ -9,11 +9,11 @@ const openai = new OpenAI({ // apiKey を取得
 const DEFAULT_AI_PROMPT =
   '日記に対して、共感的で自然な短いコメントを日本語で書いてください。1〜3文程度で、説教くさくならないようにしてください。'
 
-async function getAiPrompt(supabase: Awaited<ReturnType<typeof createClient>>): Promise<string> {
+async function getAiPrompt(supabase: Awaited<ReturnType<typeof createClient>>, userId: string): Promise<string> {
   const { data } = await supabase
     .from('app_settings')
     .select('ai_prompt')
-    .limit(1)
+    .eq('user_id', userId)
     .maybeSingle()
   return data?.ai_prompt ?? DEFAULT_AI_PROMPT
 }
@@ -62,7 +62,7 @@ export async function POST(
   }
 
   // Generate AI comment
-  const systemPrompt = await getAiPrompt(supabase)
+  const systemPrompt = await getAiPrompt(supabase, user.id)
   let contentByAi: string
   try {
     const completion = await openai.chat.completions.create({
